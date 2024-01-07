@@ -2,14 +2,11 @@ const db = require('../config/db.config')
 
 const delProducts = (req, res) => {
     db.query("delete from products where id=?", [req.body.id], (err, result) => {
-        if (!err) {
-            const data = {
-                'msg': 'deleted succesfully by id'
-            }
-            res.status(200).send(data);
+        if (result.affectedRows !== 0) {
+            res.status(200).send(result);
         } else {
             const data = {
-                'msg': 'not deleted by id error : '
+                'msg': 'not deleted by id error : ' + err
             }
             res.status(500).send(data);
         }
